@@ -1,25 +1,30 @@
-import { Injectable } from '@angular/core';
-import { map, ReplaySubject } from 'rxjs';
-import User from '../../models/user';
 import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+
+import { catchError, map, ReplaySubject } from 'rxjs';
 import { Router } from '@angular/router';
+import { enviroment } from '../enviroments/enviroments';
+import User from '../../models/user';
 
 @Injectable({
   providedIn: 'root'
 })
-
 export class AuthService {
 
-  baseUrl:String = "http://localhost:5228";
-
-  private currentUserSource = new ReplaySubject<User>(1);
+  baseUrl = enviroment.baseUrl
+  errorMessage = "";
+  
+  public currentUserSource = new ReplaySubject<User>(1);
   currentUser$ = this.currentUserSource.asObservable();
+  router: Router = new Router()
 
-  constructor(private http:HttpClient, private router: Router) { }
+  constructor(private http:HttpClient) { 
+    this.currentUserSource.next(null!);
+  }
 
   login(model:any){
     
-    return this.http.post<User>(this.baseUrl + "/Users/Login", model).pipe(
+    return this.http.post<User>(this.baseUrl + "Users/Login", model).pipe(
       map((response: User) => {
         const user = response;
         if(user){
@@ -31,11 +36,18 @@ export class AuthService {
           console.log(response)
         }
       })
+      ,
+      catchError(err => {  
+        console.log(err); 
+        this.errorMessage = err.message;
+        return [];
+      })
+
     )
   }
 
   register(model:any){
-    return this.http.post(this.baseUrl +"/Users", model)
+    return this.http.post(this.baseUrl +"Users/", model)
   }
 
   logout(){

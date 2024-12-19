@@ -1,1 +1,7 @@
-<h1> Добро пожаловать </h1>
+<div class="home" *ngIf="(authService.currentUser$ | async) == null">
+  <h1> Добро пожаловать </h1>
+</div>
+
+<div class="home" *ngIf="(authService.currentUser$ | async) as user;">
+  <h1> Добро пожаловать {{user.name}}</h1>
+</div>

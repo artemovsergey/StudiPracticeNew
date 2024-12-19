@@ -1,8 +1,4 @@
-using System.Text;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
 using SampleApp.API.Data;
 using SampleApp.API.Extensions;
 using SampleApp.API.Interfaces;

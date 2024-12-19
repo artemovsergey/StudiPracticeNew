@@ -6,7 +6,7 @@ import { CommonModule } from '@angular/common';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { Router } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
+// import { ToastrService } from 'ngx-toastr';
 
 
 import {
@@ -32,7 +32,7 @@ export class SignComponent {
 
   constructor(private authService: AuthService,
               private router: Router,
-              private toast: ToastrService){
+              ){
 
     this.signForm = new FormGroup({
       login: new FormControl("", [Validators.required]),
@@ -81,7 +81,7 @@ export class SignComponent {
   }
 
   sign(){
-    this.authService.register(this.signForm.value).subscribe({next: r => {this.router.navigate(["auth"]) ;   this.openSnackBar("Пользователь успешно зарегистрирован") ; this.toast.success("Пользователь зарегистрирован") ; console.log(r)}, error: e => {console.log(e.error); this.toast.error("Ошибка регистрации")   }})
+    this.authService.register(this.signForm.value).subscribe({next: r => {this.router.navigate(["auth"]) ;   this.openSnackBar("Пользователь успешно зарегистрирован");    }})
   }
 
 
