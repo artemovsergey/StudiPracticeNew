@@ -1,0 +1,59 @@
+<!-- <div class="users" *ngIf="loading;else main">
+  <div class="users"><h1>Загрузка</h1></div>
+  <mat-spinner></mat-spinner>
+</div> -->
+
+
+<ng-template #main >
+  <div class="users">
+    <mat-form-field>
+      <mat-label>Режим отображения</mat-label>
+      <mat-select [(value)] = "viewMode">
+        @for (view of ["Карточки", "Таблица"]; track view) {
+          <mat-option [value]="view">{{view}}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+  
+      <h1> {{title}}</h1>
+    
+      <table *ngIf="(viewMode == 'Таблица') == true" mat-table [dataSource]="users" class="mat-elevation-z8">
+        <ng-container matColumnDef="photo">
+          <th mat-header-cell *matHeaderCellDef> Фото </th>
+          <td mat-cell *matCellDef="let element"> 
+            <img src="{{element.photo}}" (click)="showCurrentUser(element)"/>
+           </td>
+        </ng-container>
+      
+        <ng-container matColumnDef="id">
+          <th mat-header-cell *matHeaderCellDef> Id </th>
+          <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+        </ng-container>
+    
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef> Имя </th>
+          <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+        </ng-container>
+    
+        <ng-container matColumnDef="login">
+          <th mat-header-cell *matHeaderCellDef> Логин </th>
+          <td mat-cell *matCellDef="let element"> {{element.login}} </td>
+        </ng-container>
+    
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+  </div>
+</ng-template>
+
+<div *ngIf="(viewMode == 'Карточки') == true" class="users"> 
+  
+  <mat-list role="list"  *ngFor="let u of users">
+      <app-usercard [user]="u" (currentUserState)="showCurrentUser($event)" />
+  </mat-list>
+
+
+  
+</div>
+
+

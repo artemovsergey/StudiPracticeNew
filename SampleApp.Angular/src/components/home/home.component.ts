@@ -1,8 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import User from '../../../models/user';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { UsersService } from '../../services/users.service';
-import {MatTableModule} from '@angular/material/table'
+import {MatTableModule} from '@angular/material/table';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-home',
@@ -11,16 +10,13 @@ import {MatTableModule} from '@angular/material/table'
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
-export class HomeComponent implements OnInit {
 
-  users: User[] = []
-  displayedColumns: string[] = ['id', 'name'];
- 
-  constructor(private userService: UsersService){
+export class HomeComponent {
+
+  title:String = ""
+
+  constructor(public authService:AuthService){
+
   }
-
-  ngOnInit() {
-    this.userService.getUsers().subscribe(r => this.users = r)
-  }
-
+  
 }

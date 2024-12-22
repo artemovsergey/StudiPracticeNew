@@ -1,17 +1,36 @@
-import { HttpClient } from '@angular/common/http';
+  import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { map, Observable, timeout } from 'rxjs';
+import { enviroment } from '../enviroments/enviroments';
 import User from '../../models/user';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class UsersService {
 
-  constructor(private http: HttpClient) {
-   }
+  //  token: string = localStorage.getItem('user') ?
+  //           JSON.parse(localStorage.getItem('user')!).token
+  //           : "token"
 
-   getUsers(){
-     return this.http.get<User[]>("http://localhost:5228/Users")
-   }
+  //  httpOptions = {
+  //   headers: new HttpHeaders({
+  //     Authorization:'Bearer ' + this.token
+  //   })
+  // } 
+
+  constructor(private http:HttpClient) {
+  }
+  
+  getUsers(): Observable<User[]> {
+    const url = enviroment.baseUrl
+    return this.http.get<User[]>(url + 'Users') //this.httpOptions
+  }
+
+  update(user:User){
+    const url = enviroment.baseUrl
+    return this.http.put<any>(url + 'Users', user) //this.httpOptions
+  }
 
 }

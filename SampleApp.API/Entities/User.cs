@@ -1,10 +1,9 @@
 using System.ComponentModel.DataAnnotations;
-
+ 
 namespace SampleApp.API.Entities;
 
-public class User : Base{
+public class User : Base {
         
-
     public string Name {get ;set;} = String.Empty;
 
     [MinLength(5,ErrorMessage = "Минимальное длина имени 5")]

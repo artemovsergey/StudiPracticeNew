@@ -38,16 +38,22 @@ public class UserRepository : IUserRepository
 
     public User EditUser(User user, int id)
     {
-        throw new NotImplementedException();
+       throw new NotImplementedException();
+    }
+
+    public User FindUser(string login)
+    {
+        var user = _db.Users.Where(u =>u.Login == login).FirstOrDefault<User>();
+        return user != null ? user : throw new Exception("Пользоватеь не найден!");
     }
 
     public User FindUserById(int id)
     {
-        throw new NotImplementedException();
+      throw new NotImplementedException();
     }
 
     public List<User> GetUsers()
     {
-        throw new NotImplementedException();
+       return _db.Users.ToList();
     }
 }

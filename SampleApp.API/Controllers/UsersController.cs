@@ -1,6 +1,5 @@
 using System.Security.Cryptography;
 using System.Text;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SampleApp.API.Dto;
 using SampleApp.API.Entities;
@@ -21,7 +20,31 @@ public class UsersController : ControllerBase
        _repo = repo;
     }
 
-    [Authorize]
+
+    [HttpPost("Login")]
+    public ActionResult Login(UserDto userDto){
+        var user = _repo.FindUser(userDto.Login);
+        return CheckPasswordHash(userDto, user);
+    }
+
+
+    private ActionResult CheckPasswordHash(UserDto userDto, User user)
+    {
+        using var hmac = new HMACSHA512(user.PasswordSalt);
+        var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(userDto.Password));
+
+        for (int i = 0; i < computedHash.Length; i++)
+        {
+            if (computedHash[i] != user.PasswordHash[i])
+            {
+                return Unauthorized($"Неправильный пароль");
+            }
+        }
+
+        return Ok(user);
+    }
+
+    //[Authorize]
     [HttpPost]
     public ActionResult CreateUser(UserDto userDto){
 
@@ -46,7 +69,7 @@ public class UsersController : ControllerBase
     }
     
     [HttpGet]
-    public ActionResult GetUser(){
+    public ActionResult GetUsers(){
         return Ok(_repo.GetUsers());
     }
     
