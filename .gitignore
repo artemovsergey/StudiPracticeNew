@@ -5,7 +5,7 @@ SampleApp.API/appsettings.json
 
 /bin/
 /obj/
-
+.angular
 # dotenv files
 .env
 
